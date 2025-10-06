@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.milenkovicm</groupId>
+    <artifactId>gas</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.arrow>19.0.0-SNAPSHOT</version.arrow>
+        <version.slf4j>2.0.12</version.slf4j>
+        <version.graalvm>25.0.0</version.graalvm>
+    </properties>
+
+    <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.graalvm.sdk/graal-sdk -->
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>${version.graalvm}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.arrow</groupId>
+            <artifactId>arrow-c-data</artifactId>
+            <version>${version.arrow}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.arrow</groupId>
+            <artifactId>arrow-memory-netty</artifactId>
+            <version>${version.arrow}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.13.4</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${version.slf4j}</version>
+            <!--
+            we deliver simple logging as part of binary,
+            it should use log4j2 and log4rs
+            -->
+            <!--            <scope>test</scope>-->
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <directory>../target/java</directory>
+        <plugins>
+            <plugin>
+                <!--
+                https://graalvm.github.io/native-build-tools/latest/maven-plugin.html
+                -->
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>0.11.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <debug>true</debug>
+
+<!--                    <mainClass>com.github.milenkovicm.garrow.LibJvmStream</mainClass>-->
+                    <imageName>libgas</imageName>
+                    <sharedLibrary>true</sharedLibrary>
+<!--                    <verbose>true</verbose>-->
+<!--                    <imageName>jvmstream</imageName>-->
+                    <buildArgs>
+                        <arg>--shared</arg>
+                        <arg>--no-fallback</arg>
+<!--                        <arg>-g</arg>-->
+<!--                        <arg>-O0</arg>-->
+                        <arg>--add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED</arg>
+                        <arg>--initialize-at-run-time=io.netty,org.apache.arrow.memory.netty.NettyAllocationManager,org.apache.arrow.memory.netty.NettyAllocationManager$1,org.apache.arrow.memory.ArrowBuf,org.apache.arrow.memory.ReferenceManager$1</arg>
+                        <arg>--initialize-at-run-time=org.apache.arrow.memory.netty.DefaultAllocationManagerFactory</arg>
+                        <arg>--initialize-at-run-time=io.netty,org.apache.arrow</arg>
+<!--                        <arg>&#45;&#45;initialize-at-build-time=org.apache.arrow.c.jni.JniWrapper</arg>-->
+                        <arg>--initialize-at-run-time=org.apache.arrow.c.jni.JniWrapper</arg>
+                        <arg>--initialize-at-run-time=org.apache.arrow.c.jni.JniLoader</arg>
+                        <arg>--initialize-at-run-time=org.apache.arrow.c.jni</arg>
+                        <arg>--initialize-at-run-time=org.apache.arrow.c</arg>
+<!--                        <arg>&#45;&#45;initialize-at-run-time=java.lang.Object</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=com.fasterxml.jackson.databind.json.JsonMapper,com.fasterxml.jackson.core.JsonFactory,com.fasterxml.jackson.core.io.SerializedString,com.fasterxml.jackson.databind.SerializationConfig,com.fasterxml.jackson.core.ErrorReportConfiguration,com.fasterxml.jackson.core.StreamReadConstraints</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=com.fasterxml.jackson.databind.cfg.BaseSettings,com.fasterxml.jackson.core.StreamWriteConstraints,com.fasterxml.jackson.core.util.JsonRecyclerPools$ThreadLocalPool,com.fasterxml.jackson.databind.ser.BeanSerializerFactory</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=com.fasterxml.jackson.databind.cfg.CoercionConfigs</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=com.fasterxml.jackson.databind.ser.DefaultSerializerProvider$Impl</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=com.fasterxml.jackson.databind.cfg,com.fasterxml.jackson.databind.deser.std</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=com.fasterxml.jackson.databind.ser.impl.UnknownSerializer,com.fasterxml.jackson.core.util.DefaultPrettyPrinter</arg>-->
+                        <arg>--initialize-at-run-time=org.slf4j.simple.SimpleLogger,org.slf4j.simple.SimpleLoggerConfiguration,org.slf4j.simple.OutputChoice,org.slf4j.simple.OutputChoice$OutputChoiceType</arg>
+                        <arg>--initialize-at-run-time=com.fasterxml.jackson.databind</arg>
+                        <arg>--initialize-at-run-time=com.fasterxml.jackson.core</arg>
+                        <arg>--initialize-at-run-time=com.fasterxml.jackson.annotation</arg>
+                        <arg>--initialize-at-run-time=com.fasterxml.jackson.datatype</arg>
+<!--                        <arg>&#45;&#45;initialize-at-build-time=org.apache.arrow.memory.netty.DefaultAllocationManagerFactory</arg>-->
+<!--                        <arg>&#45;&#45;initialize-at-build-time=org.apache.arrow.memory.netty.NettyAllocationManager</arg>-->
+                    </buildArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.2.0</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>src/test/java/</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

@@ -1,0 +1,54 @@
+name: Basic Flow
+
+on:
+  push:
+    branches: [master, ci_*]
+    paths-ignore:
+      - "**.md"
+      - "**.yaml"
+  pull_request:
+    branches: [master]
+    paths-ignore:
+      - "**.md"
+      - "**.yaml"
+
+env:
+  CARGO_TERM_COLOR: always
+  # this one speeds up builds, they say
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          profile: minimal
+          toolchain: stable
+          components: rustfmt
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: "25"
+          distribution: "graalvm-community" # See 'Supported distributions' for available options
+          # Token for communication with the GitHub API. Please set this to ${{ secrets.GITHUB_TOKEN }} (see templates) to allow the action to authenticate with the GitHub API, which helps reduce rate-limiting issues.
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+      # make cargo format to fail first
+      # before bringing other things, and spending time
+      # compiling
+      - name: Cargo Format Check
+        run: cargo fmt --all --check --
+        # we use cache if format is correct
+      - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+      - name: Run the Maven package
+        run: cd java &&mvn --batch-mode package
+      - name: Cargo Compile (with tests)
+        # should be faster than compiling tests again in
+        # test phase
+        # run: cargo test --no-run --locked --all-features
+        run: cargo test --no-run --all-features
+      - name: Cargo Run Tests
+        run: cargo test  -- --nocapture --quiet

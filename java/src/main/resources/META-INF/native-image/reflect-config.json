@@ -1,0 +1,31 @@
+[
+  {
+    "name": "org.apache.arrow.memory.netty.DefaultAllocationManagerFactory",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "org.apache.arrow.memory.netty.NettyAllocationManager",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {   "name": "io.netty.buffer.PooledByteBufAllocator",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.netty.buffer.UnpooledByteBufAllocator",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "org.apache.arrow.memory.RootAllocator",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  }
+
+]

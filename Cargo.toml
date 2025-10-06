@@ -1,0 +1,14 @@
+[package]
+name = "graalvm_arrow_stream"
+version = "0.1.0"
+edition = "2024"
+homepage = "https://github.com/milenkovicm"
+license = "MIT"
+
+[dependencies]
+libloading = "0.8"
+arrow = { version = "56", features = ["ffi"]}
+# futures = { version = "0.3" }
+
+[build-dependencies]
+bindgen = "0.72"

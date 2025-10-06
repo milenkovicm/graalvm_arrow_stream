@@ -1,0 +1,18 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "condition": {
+          "typeReachable": "org.apache.arrow.c.jni.JniWrapper"
+        },
+        "pattern": ".*\\.dylib"
+      },
+      {
+        "condition": {
+          "typeReachable": "org.apache.arrow.c.jni.JniWrapper"
+        },
+        "pattern": ".*\\.so"
+      }
+    ]
+  }
+}
