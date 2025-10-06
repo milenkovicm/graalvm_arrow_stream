@@ -13,7 +13,7 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.arrow>19.0.0-SNAPSHOT</version.arrow>
-        <version.slf4j>2.0.12</version.slf4j>
+        <version.slf4j>2.0.17</version.slf4j>
         <version.graalvm>25.0.0</version.graalvm>
     </properties>
 
