@@ -1,6 +1,6 @@
 # GraalVM Arrow Stream (GAS)
 
-This is a showcase project integrating [GraalVM] generated native shared library with a Rust based application using [Arrow C Interface], enabling efficient streaming of [Apache Arrow] record batches created by [GraalVM] native library.
+This is a showcase project integrating [GraalVM] generated native shared library with a rustlang based application using [Arrow C Interface], enabling efficient streaming of [Apache Arrow] record batches created by [GraalVM] native library.
 
 ## Overview
 
@@ -90,7 +90,7 @@ Library extension can be achieved by replacing [MockReader.java](java/src/main/j
 
 ## License
 
-Apache 2.0
+MIT
 
 ## Contributing
 
