@@ -1,4 +1,4 @@
-# GraalVM Arrow Stream (GAS)
+# ⛽️ GraalVM Arrow Stream (GAS)
 
 This is a showcase project integrating [GraalVM] generated native shared library with a rustlang based application using [Arrow C Interface], enabling efficient streaming of [Apache Arrow] record batches created by [GraalVM] native library.
 
@@ -12,8 +12,9 @@ This is a showcase project integrating [GraalVM] generated native shared library
 
 ## Features & Limitations
 
-- Streams [Apache Arrow] record batches from [GraalVM] native shared library.
-- Community edition GraalVM [supports only "Serial GC"](https://www.graalvm.org/latest/reference-manual/native-image/optimizations-and-performance/MemoryManagement/) which may not be the best option in all cases.
+- ✅ Streams [Apache Arrow] record batches from [GraalVM] native shared library with zero copy.
+- ✅ Simpler deployment than JVM based solution
+- ❌ Community edition GraalVM [supports only "Serial GC"](https://www.graalvm.org/latest/reference-manual/native-image/optimizations-and-performance/MemoryManagement/) which may not be the best option in all cases.
 
 ## Requirements
 
@@ -65,7 +66,7 @@ let streamer = GraalArrowStreamer::try_new_from_file("/path/to/libmy_lib.so")?;
 let streamer = GraalArrowStreamer::try_new_from_name_and_path("my_lib", "./lib")?;
 ```
 
-## Important Safety Notes
+## ⚠️ Important Safety Notes
 
 1. **Lifetime Management**: The `GraalArrowStreamer` instance must outlive any record batches created by its readers. Failing to maintain this lifetime ordering may result in segmentation faults (`SIGSEGV`).
 This is current implementation limitation, as it was not trivial specifying this using lifetimes with current APIs.
@@ -97,7 +98,7 @@ MIT
 This is a showcase project and will not be actively maintained. Contributions are welcome!
 Please feel free to submit a Pull Request.
 
-## TODO
+## 🏗️ TODO
 
 - [ ] Integrate java and rust loggers
 
