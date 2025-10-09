@@ -2,7 +2,7 @@
 
 This is a showcase project integrating [GraalVM] generated native shared library with a rustlang based application using [Arrow C Interface], enabling efficient streaming of [Apache Arrow] record batches created by [GraalVM] native library.
 
-## Overview
+## ℹ️ Overview
 
 > [!WARNING]
 > A Arrow Java version 19+ is required, or version patched with [Apache Arrow Java Issue #866](https://github.com/apache/arrow-java/issues/866) is required
@@ -10,20 +10,20 @@ This is a showcase project integrating [GraalVM] generated native shared library
 
 `GraalArrowStream` bridges the gap between [GraalVM] native libraries and Rust applications by implementing the [Arrow C Interface]. This allows for efficient streaming of [Apache Arrow] record batches while maintaining proper memory management and thread safety.
 
-## Features & Limitations
+## ✨ Features & Limitations
 
 - ✅ Streams [Apache Arrow] record batches from [GraalVM] native shared library with zero copy.
 - ✅ Simpler deployment than JVM based solution
 - ❌ Community edition GraalVM [supports only "Serial GC"](https://www.graalvm.org/latest/reference-manual/native-image/optimizations-and-performance/MemoryManagement/) which may not be the best option in all cases.
 
-## Requirements
+## 📝 Requirements
 
 - Tested with [GraalVM] 25 (CE)
 - Arrow Java 19 or patched version, see [Apache Arrow Java Issue #866](https://github.com/apache/arrow-java/issues/866) for details.
 
-## Usage
+## 🛠️ Usage
 
-### Basic Example
+### 💡 Basic Example
 
 ```rust
 use graalvm_arrow_stream::GraalArrowStreamer;
@@ -50,7 +50,7 @@ fn main() -> arrow::error::Result<()> {
 }
 ```
 
-### Loading Libraries
+### ➡️ Loading Libraries
 
 The library provides multiple ways to load your GraalVM native library:
 
@@ -85,15 +85,15 @@ let mut reader = streamer.create_reader("path")?;
 let batch = reader.next();
 ```
 
-## Extending Library
+## ⚙️ Extending Library
 
 Library extension can be achieved by replacing [MockReader.java](java/src/main/java/com/github/milenkovicm/gas/MockReader.java) with an actual implementation. This may involve [reconfiguring the build process](https://www.graalvm.org/latest/reference-manual/native-image/overview/Build-Overview/).
 
-## License
+## ⚖️ License
 
 MIT
 
-## Contributing
+## 🤝 Contributing
 
 This is a showcase project and will not be actively maintained. Contributions are welcome!
 Please feel free to submit a Pull Request.
