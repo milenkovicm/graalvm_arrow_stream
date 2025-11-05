@@ -6,7 +6,7 @@ homepage = "https://github.com/milenkovicm"
 license = "MIT"
 
 [dependencies]
-libloading = "0.8"
+libloading = "0.9"
 arrow = { version = "56", features = ["ffi"]}
 # futures = { version = "0.3" }
 
